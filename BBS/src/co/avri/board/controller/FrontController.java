@@ -14,7 +14,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import co.avri.board.comm.Action;
 import co.avri.board.command.LoginAction;
+import co.avri.board.command.LoginForm;
+import co.avri.board.command.LogoutAction;
 import co.avri.board.command.MainAction;
+import co.avri.board.command.MemberForm;
+import co.avri.board.command.MemberInsertAction;
+import co.avri.board.command.MemberListAction;
 
 // Servlet implementation class FrontController
 @WebServlet("/FrontController")
@@ -31,6 +36,12 @@ public class FrontController extends HttpServlet {
 	// 요청 정의
 		map.put("/main.do", new MainAction()); // 처음들어오는페이지 index.jsp를 처리
 		map.put("/login.do", new LoginAction()); // 로그인 메뉴를 처리하는 것
+		map.put("/loginForm.do", new LoginForm()); // 로그인폼 호출
+		map.put("/memberList.do", new MemberListAction()); // 회원전체리스트보기
+		map.put("/memberForm.do", new MemberForm()); // 회원가입화면 호출
+		map.put("/memberInsert.do", new MemberInsertAction()); // 회원입력
+		map.put("/logout.do", new LogoutAction()); // 로그아웃
+		
 		// url이 /login.do 로 들어오면 LoginAction() 를 실행해라
 		// 이걸하려면 메인액션 커맨드, 로그인액션 커맨드가 있어야함
 		

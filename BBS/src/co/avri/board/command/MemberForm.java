@@ -5,10 +5,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import co.avri.board.comm.Action;
 
-public class MainAction implements Action {
+public class MemberForm implements Action {
 
 	@Override
 	public String exec(HttpServletRequest request, HttpServletResponse response) {
-		return "jsp/main/main.jsp";
+		// 회원가입 폼 호출
+		return "jsp/member/memberForm.jsp";
 	}
+
 }
