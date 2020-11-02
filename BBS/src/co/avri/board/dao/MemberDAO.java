@@ -15,17 +15,21 @@ public class MemberDAO extends DAO {
 	private MemberVO vo; // dao에 vo 실어서 보냄
 	
 	// final 상수들은 대부분 대문자 쓴다.. (ctrl+shift+X)
-	private final String SELECT_ALL = "SELECT * FROM MEMBER"; // 전체 멤버
+	private final String SELECT_ALL = "SELECT * FROM ( SELECT A.*, ROWNUM RN FROM ("
+										+ "SELECT * FROM MEMBER ORDER BY ID "
+										+ ") A ) B WHERE RN BETWEEN ? AND ?"; // 전체 멤버 + 페이징
 	private final String SELECT = "SELECT * FROM MEMBER WHERE ID = ? AND PASSWORD = ?"; // 한명 선택
 	private final String INSERT = "INSERT INTO MEMBER(ID, NAME, PASSWORD, ADDRESS,TEL,ENTERDATE) VALUES (?,?,?,?,?,?)";
 	private final String UPDATE = "UPDATE MEMBER SET NAME = ?, PASSWORD = ?, ADDRESS = ?, TEL = ? WHERE ID = ?";
 	private final String DELETE = "DELETE FROM MEMBER WHERE ID = ?";
 	
-	public List<MemberVO> selectAll(){ // 멤버리스트 전체를 가져오는 메소드
+	public List<MemberVO> selectAll(MemberVO mvo){ // 한 행을 찾을때(검색할때) select
 		List<MemberVO> list = new ArrayList<MemberVO>();
 		// 결과값이 여러개가 들어올수있으니 콜렉션 개체에 담는다(ArrayList)
 		try {
 			pstmt = conn.prepareStatement(SELECT_ALL); // dbms에 sql 전달
+			pstmt.setInt(1, mvo.getFirst());
+			pstmt.setInt(2, mvo.getLast());
 			rs = pstmt.executeQuery(); // pstmt 수행결과를 받아서 rs에 담음
 			while(rs.next()) {
 				vo = new MemberVO();
@@ -45,6 +49,21 @@ public class MemberDAO extends DAO {
 			close();
 		}
 		return list;
+	}
+	public int count(MemberVO vo) { // 전체건수
+		int cnt = 0;
+		try {
+			String SQL = "SELECT COUNT(*) FROM MEMBER";
+			pstmt = conn.prepareStatement(SQL);
+			rs = pstmt.executeQuery();
+			rs.next(); // 그래야 첫번째 행으로 감
+			cnt = rs.getInt(1); // 천번째 열 count 함수결과를읽고 cnt에 넣어줌
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return cnt;
 	}
 	
 	public MemberVO select(MemberVO vo) { // 한 행을 찾을때(검색할때) select

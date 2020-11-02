@@ -7,6 +7,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +23,9 @@ import co.avri.board.command.MemberInsertAction;
 import co.avri.board.command.MemberListAction;
 
 // Servlet implementation class FrontController
-@WebServlet("/FrontController")
+/*@WebServlet("/FrontController")*/
+@MultipartConfig
+@WebServlet("*.do")
 public class FrontController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     // 내부적으로 사용하려고 해시맵 변수 사용 HashMap
