@@ -25,18 +25,30 @@ public class MemberInsertAction implements Action {
 		vo.setEnterdate(Date.valueOf(request.getParameter("enterdate")));
 		// 폼에서 넘어오는 값은 전부 String이니까 valueOf 써서 String값을 넣어주면 Date로 나오는걸 쓰자
 		
+		// 첨부파일처리.. 이건뭐지?		
 		int n = dao.insert(vo);
-		
 		// n이 0이면 입력실패. 0이 아니면 insert 성공.
-// request.setAttribute("check", n); 는 request 객체에 n을 실어보내주는방법
-// 그거말고 페이지로 넘기는거 해보자		
-		String page;
-		if (n != 0) {
-			page = "jsp/member/insertSuccess.jsp";
-		} else {
-			page = "jsp/member/insertFail.jsp";
-		}
-		// 입력 성공하든 실패하든 페이지로 넘겨준다
-		return page;
+		
+	// 목록으로 SendRedirect()
+	/*
+	 * try {
+	 * 		response.sendRedirect("memberList.do");
+	 * } catch (IOException e) {
+	 * 		e.printStackTrace(); }
+	 * return null;
+	 */
+		return "redirect:memberList.do";
+		
+		/*
+		 * // request.setAttribute("check", n); 는 request 객체에 n을 실어보내주는방법
+		 * // 그거말고 페이지로 넘기는거 해보자
+		 * String page;
+		 * if (n != 0) {
+		 * 		page = "jsp/member/insertSuccess.jsp";
+		 * } else {
+		 * 		page = "jsp/member/insertFail.jsp";
+		 * }  // 입력 성공하든 실패하든 페이지로 넘겨준다
+		 * return page;
+		 */
 	}
 }
